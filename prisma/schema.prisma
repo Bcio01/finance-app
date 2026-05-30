@@ -1,0 +1,60 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+model settings {
+  id            Int     @id @default(1)
+  currency      String  @default("CLP")
+  locale        String  @default("es-CL")
+  theme         String  @default("dark")
+  pin           String?
+  isInitialized Boolean @default(false)
+}
+
+model Category {
+  id           Int           @id @default(autoincrement())
+  name         String
+  color        String?
+  transactions Transaction[]
+  budgets      Budget[]
+}
+
+model SavingsGoal {
+  id          Int       @id @default(autoincrement())
+  title       String
+  target      Float
+  current     Float     @default(0)
+  deadline    DateTime?
+  priority    String?   // 'low', 'medium', 'high'
+  category    String?
+  currency    String    @default("CLP")
+  createdAt   DateTime  @default(now())
+}
+
+model Budget {
+  id         Int      @id @default(autoincrement())
+  amount     Float
+  month      Int
+  year       Int
+  categoryId Int
+  currency   String   @default("CLP")
+  category   Category @relation(fields: [categoryId], references: [id])
+
+  @@unique([categoryId, month, year])
+}
+
+model Transaction {
+  id          Int      @id @default(autoincrement())
+  type        String
+  amount      Float
+  currency    String   @default("CLP")
+  description String?
+  categoryId  Int
+  createdAt   DateTime @default(now())
+  category    Category @relation(fields: [categoryId], references: [id])
+}

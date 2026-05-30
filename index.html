@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Tauri + React + Typescript</title>
+    <script>
+      window.onerror = function(message, source, lineno, colno, error) {
+        document.body.innerHTML += '<div style="color:red; background:white; position:fixed; z-index:9999; top:0; left:0; padding:20px; width:100%;"><h1 style="color:red">Runtime Error</h1><p>' + message + '</p><pre>' + (error ? error.stack : '') + '</pre></div>';
+      };
+      window.addEventListener('unhandledrejection', function(event) {
+        document.body.innerHTML += '<div style="color:red; background:white; position:fixed; z-index:9999; top:0; left:0; padding:20px; width:100%;"><h1 style="color:red">Unhandled Promise Rejection</h1><p>' + event.reason + '</p><pre>' + (event.reason ? event.reason.stack : '') + '</pre></div>';
+      });
+    </script>
+  </head>
+
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
